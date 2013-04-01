@@ -3,6 +3,20 @@
 <form method="post" action="<? VAR ModPath ?>addfilter">
   <? INC _csrf_check.tmpl ?>
   <div class="section">
+    Add/delete REGEXes that should be used for filtering in your channels.  There are a couple important points to keep in mind here.
+    <ul>
+      <li>"Add"ing a RE using a key that is already saved will overwrite
+      the old RE without warning.
+      <li>We use Python's "re" library, so the RE syntax you use must be
+      supported by that library.
+      <li>We use the re.match() function, not search.  Your RE doesn't need
+      to be anchored, but it must match the entire line (in short, begin
+      and end with '.*').
+      <li>Any messages which exactly matches the RE for that channel (if
+      such exists) will be <b>silently</b> discarded.
+    </ul>
+  </div>
+  <div class="section">
     <h3>Add a Filter</h3>
     <div class="sectionbg">
       <div class="sectionbody">
