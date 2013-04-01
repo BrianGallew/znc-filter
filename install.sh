@@ -19,13 +19,13 @@ MODDIR=`$PKGCONFIG --variable=moddir znc`
 test -z "${MODDIR}" && die "Can not determine module directory"
 
 # Next, we get the data directory for modules
-DATADIR=`$PKGCONFIG --variable=moddatadir znc`
-test -z "${DATADIR}" && die "Can not determine module directory"
+MODDATADIR=`$PKGCONFIG --variable=moddatadir znc`
+test -z "${MODDATADIR}" && die "Can not determine module directory"
 
 # Now (yeah, it's probably late, but still) confirm modpython support
 test -f "${MODDIR}/modpython.so" || die "Python support doesn't seem to be available in this ZNC installation"
 
 # Finally, we can do the installation
 cp filter.py "${MODDIR}"
-mkdir -p "${MODDATADIR}/filter/tmpl"
-cp index.tmpl "${MODDATADIR}/filter/tmpl"
+mkdir -p "${MODDATADIR}/modules/filter/tmpl"
+cp index.tmpl "${MODDATADIR}/modules/filter/tmpl"
