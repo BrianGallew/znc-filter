@@ -24,8 +24,12 @@ class filter(znc.Module):
         it should be passed on to the client or just dropped on the floor.
         '''
         c = str(channel.GetName())
-        if not c in self.quickstore: return znc.CONTINUE # No filters for this channel
-        if self.quickstore[c].match(str(message)): return znc.HALT # Match: drop it!
+        if c in self.quickstore:
+            if self.quickstore[c].match(str(message)): return znc.HALT # Match: drop it!
+        if nick in self.quickstore:
+            if self.quickstore[nick].match(str(message)): return znc.HALT # Match: drop it!
+        if nick+c in self.quickstore:
+            if self.quickstore[nick+c].match(str(message)): return znc.HALT # Match: drop it!
         return znc.CONTINUE     # Nah, let the user see the message.
 
     def addfilter(self, key, value):
@@ -57,18 +61,27 @@ class filter(znc.Module):
         '''
         if str(pagename) == 'index': # Just draw the index page
             for key,value in self.nv.items(): # Add all the items to the page
+                if not '#' in key:
+                    channel = ''
+                    nick = key
+                else:
+                    parts = key.split('#', 1)
+                    nick = parts[0]
+                    channel = '#' + parts[1]
                 row = tmpl.AddRow("FilterLoop")
-                row['key'] = key
+                row['nick'] = nick
+                row['channel'] = channel
                 row['regex'] = value
             return True
         elif str(pagename) == 'addfilter': # Add a new filter
             # This try/except is here to protect us from stupid user tricks.
-            try: self.addfilter(websock.GetParam('key'),websock.GetParam('regex'))
+            try: self.addfilter(websock.GetParam('nick', '')+websock.GetParam('channel',''),
+                                websock.GetParam('regex'))
             except: pass
             websock.Redirect(self.GetWebPath()) # The only displayable page is the index.
             return True
         elif str(pagename) == 'delfilter': # Drop an old filter
-            self.delfilter(websock.GetParam('key', False))
+            self.delfilter(websock.GetParam('nick', '')+websock.GetParam('channel', ''))
             websock.Redirect(self.GetWebPath()) # The only displayable page is the index.
             return True
         return False # This will make the ZNC web server through a "page doesn't respond" error.
