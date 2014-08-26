@@ -75,13 +75,23 @@ class filter(znc.Module):
             return True
         elif str(pagename) == 'addfilter': # Add a new filter
             # This try/except is here to protect us from stupid user tricks.
-            try: self.addfilter(websock.GetParam('nick', '')+websock.GetParam('channel',''),
-                                websock.GetParam('regex'))
-            except: pass
+            try:
+                nick = websock.GetParam('nick') or ''
+                channel = websock.GetParam('channel') or ''
+                myregex = websock.GetParam('regex')
+                print("nick is '%s'" % nick)
+                print("channel is '%s'" % channel)
+                print("myregex is '%s'" % myregex)
+                self.addfilter(nick+channel, websock.GetParam('regex'))
+            except Exception as e:
+                print(e)
+                pass
             websock.Redirect(self.GetWebPath()) # The only displayable page is the index.
             return True
         elif str(pagename) == 'delfilter': # Drop an old filter
-            self.delfilter(websock.GetParam('nick', '')+websock.GetParam('channel', ''))
+            nick = websock.GetParam('nick', False) or ''
+            channel = websock.GetParam('channel', False) or ''
+            self.delfilter(nick+channel)
             websock.Redirect(self.GetWebPath()) # The only displayable page is the index.
             return True
         return False # This will make the ZNC web server through a "page doesn't respond" error.

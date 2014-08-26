@@ -22,9 +22,9 @@
       <div class="sectionbody">
 	<div class="subsection third">
 	  <div class="inputlabel">Channel:</div>
-	  <input type="text" name="channel" size="8" />
-	  <div class="inputlabel">Nick:</div>
-	  <input type="text" name="nick" size="8" />
+	  <input type="text" name="channel" size="64" />
+	  <div class="inputlabel" align="right">Nick:</div>
+	  <input type="text" name="nick" size="24" />
 	</div>
 
 	<div class="subsection full">
@@ -48,6 +48,7 @@
     <tr>
       <td style="width: 10px;"></td>
       <td>Channel</td>
+      <td>Nick</td>
       <td>Filter Regex</td>
     </tr>
   </thead>
@@ -55,7 +56,8 @@
     <? LOOP FilterLoop ?>
     <tr class="<? IF __EVEN__ ?>evenrow<? ELSE ?>oddrow<? ENDIF ?>">
       <td><a href="<? VAR ModPath TOP ?>delfilter?key=<? VAR key ESC=URL,HTML ?>">[Del]</a></td>
-      <td><? VAR key ?></td>
+      <td><? VAR channel ?></td>
+      <td><? VAR nick ?></td>
       <td><? VAR regex ?></td>
     </tr>
     <? ENDLOOP ?>
