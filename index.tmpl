@@ -55,7 +55,7 @@
   <tbody>
     <? LOOP FilterLoop ?>
     <tr class="<? IF __EVEN__ ?>evenrow<? ELSE ?>oddrow<? ENDIF ?>">
-      <td><a href="<? VAR ModPath TOP ?>delfilter?key=<? VAR key ESC=URL,HTML ?>">[Del]</a></td>
+      <td><a href="<? VAR ModPath TOP ?>delfilter?channel=<? VAR channel ESC=URL,HTML ?>&nick=<? VAR nick ESC=URL,HTML ?>">[Del]</a></td>
       <td><? VAR channel ?></td>
       <td><? VAR nick ?></td>
       <td><? VAR regex ?></td>
